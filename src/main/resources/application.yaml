@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/tours_secure_vue_jwt
+    username: postgres
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+jwt:
+  secretPhrase: iuyiuyityuyYUUIYIUYyuyIUYIOBVVCCVTYUYBUIYUYUYPODREDsdreRRrdrdytfuuyuUYGIUHUOHygyguyguyguggyguygYGYGUYGIUIUIUGI
+  expirationToken: 86400000
