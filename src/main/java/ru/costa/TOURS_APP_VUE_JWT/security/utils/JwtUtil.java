@@ -50,7 +50,7 @@ public class JwtUtil {
             claims.put("lastName", customUserDetails.getLastName());
             claims.put("firstName", customUserDetails.getFirstName());
             claims.put("patronymic", customUserDetails.getPatronymic());
-            claims.put("phone", customUserDetails.getPhone());
+            claims.put("phone", customUserDetails.getPhones());
             claims.put("roles", customUserDetails.getRoles());
         }
         return generateToken(claims, userDetails);
