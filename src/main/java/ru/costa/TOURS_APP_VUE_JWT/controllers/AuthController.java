@@ -18,7 +18,7 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
 
-    @PostMapping(value = "/signin")
+    @PostMapping(value = "/signin", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> authenticateUser(@RequestBody SignInRequest signInRequest) {
         return ResponseEntity.ok(
                 authService.signInResponse(signInRequest)

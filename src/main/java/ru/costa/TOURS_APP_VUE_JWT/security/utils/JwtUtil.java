@@ -21,7 +21,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class JwtUtil {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(JwtUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtUtil.class);
 
     @Value("${jwt.secretPhrase}")
     private String secretPhrase;
