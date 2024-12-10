@@ -2,14 +2,8 @@ package ru.costa.TOURS_APP_VUE_JWT.init;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.costa.TOURS_APP_VUE_JWT.models.Passport;
-import ru.costa.TOURS_APP_VUE_JWT.models.Phone;
-import ru.costa.TOURS_APP_VUE_JWT.models.Role;
-import ru.costa.TOURS_APP_VUE_JWT.models.User;
-import ru.costa.TOURS_APP_VUE_JWT.repository.PassportRepository;
-import ru.costa.TOURS_APP_VUE_JWT.repository.PhoneRepository;
-import ru.costa.TOURS_APP_VUE_JWT.repository.RoleRepository;
-import ru.costa.TOURS_APP_VUE_JWT.repository.UserRepository;
+import ru.costa.TOURS_APP_VUE_JWT.models.*;
+import ru.costa.TOURS_APP_VUE_JWT.repository.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,12 +16,13 @@ public class AppInit {
     private final PassportRepository passportRepository;
     private final PhoneRepository phoneRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PaymentRepository paymentRepository;
 
     public AppInit(UserRepository userRepository,
                    RoleRepository roleRepository,
                    PassportRepository passportRepository,
                    PhoneRepository phoneRepository,
-                   PasswordEncoder passwordEncoder) {
+                   PasswordEncoder passwordEncoder, PaymentRepository paymentRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passportRepository = passportRepository;
@@ -70,8 +65,15 @@ public class AppInit {
         phoneRepository.save(phoneUser2);
         phoneRepository.save(mobPhoneUser2);
 
-
-
+        Payment payment1 = new Payment(0L, 300.00, BasisOfPayment.MEAL);
+        Payment payment2 = new Payment(0L, 100.00, BasisOfPayment.TRAIN);
+        Payment payment3 = new Payment(0L, 500.00, BasisOfPayment.MUSICIANS);
+        Payment payment4 = new Payment(0L, 500.00, BasisOfPayment.BUS);
+        Set<Payment> payments = new HashSet<>();
+        payments.add(payment1);
+        payments.add(payment2);
+        payments.add(payment3);
+        payments.add(payment4);
 
         User user1 = User.builder()
                 .username("anton@mail.ru")
@@ -80,7 +82,8 @@ public class AppInit {
                 .firstName("Anton")
                 .patronymic("Antonovich")
                 .passport(passport1)
-                .phones(Set.of(phoneUser1, mobPhoneUser2))
+//                .phones(Set.of(phoneUser1, mobPhoneUser2))
+//                .payments(Set.of(payment2, payment4))
                 .roles(Set.of(admin, user))
                 .build();
         User user2 = User.builder()
@@ -90,11 +93,13 @@ public class AppInit {
                 .firstName("Oleg")
                 .patronymic("Ivanovich")
                 .passport(passport2)
-                .phones(Set.of(phoneUser2, mobPhoneUser1))
+//                .phones(Set.of(phoneUser2, mobPhoneUser1))
+//                .payments(Set.of(payment1, payment3))
                 .roles(Set.of(user))
                 .build();
         userRepository.save(user1);
         userRepository.save(user2);
+        this.paymentRepository = paymentRepository;
     }
 
     public Role checkRole(String name, RoleRepository roleRepository) {

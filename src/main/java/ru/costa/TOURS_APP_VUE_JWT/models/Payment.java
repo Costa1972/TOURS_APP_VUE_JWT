@@ -7,20 +7,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "passports")
+@Table(name = "payments")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Passport {
+public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "series")
-    private String series;
-    @Column(name = "number")
-    private String number;
+    private Double amount;
+    private BasisOfPayment basisOfPayment;
 
 //    @ManyToOne
 //    private User user;

@@ -36,4 +36,17 @@ public class UserService implements UserDetailsService {
                         new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet())
         );
     }
+
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь %s не найден.".formatted(username)));
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    public boolean ifUserExists(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
 }
