@@ -20,6 +20,8 @@ public class Payment {
     private Double amount;
     private BasisOfPayment basisOfPayment;
 
-//    @ManyToOne
-//    private User user;
+    public Payment(double amount, BasisOfPayment basisOfPayment) {
+        this.amount = amount;
+        this.basisOfPayment = basisOfPayment;
+    }
 }

@@ -13,5 +13,5 @@ public class AuthenticationResponse {
     private String tokenType;
     @NotNull
     private String token;
-
+    private String username;
 }

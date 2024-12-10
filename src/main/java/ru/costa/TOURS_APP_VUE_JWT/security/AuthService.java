@@ -4,9 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.costa.TOURS_APP_VUE_JWT.models.Role;
 import ru.costa.TOURS_APP_VUE_JWT.models.User;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.requests.SignInRequest;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.requests.SignUpRequest;
@@ -14,6 +19,11 @@ import ru.costa.TOURS_APP_VUE_JWT.security.payloads.responses.AuthenticationResp
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.responses.MessageResponse;
 import ru.costa.TOURS_APP_VUE_JWT.security.utils.JwtUtil;
 import ru.costa.TOURS_APP_VUE_JWT.services.UserService;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +40,9 @@ public class AuthService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 signInRequest.getUsername(),
                 signInRequest.getPassword()));
-        UserDetails userDetails = userService.loadUserByUsername(signInRequest.getUsername());
-        String token = jwtUtil.getAuthenticationToken(userDetails);
-        return new AuthenticationResponse(BEARER_PREFIX, token);
+        var user = userService.loadUserByUsername(signInRequest.getUsername());
+        String token = jwtUtil.generateToken(user);
+        return new AuthenticationResponse(BEARER_PREFIX, token, signInRequest.getUsername());
     }
 
     public ResponseEntity<?> signUpResponse(SignUpRequest signUpRequest) {
@@ -43,7 +53,8 @@ public class AuthService {
                 signUpRequest.getConfirmPassword(),
                 signUpRequest.getLastName(),
                 signUpRequest.getFirstName(),
-                signUpRequest.getPatronymic());
+                signUpRequest.getPatronymic(),
+                signUpRequest.getRoles());
         if (username == null || password == null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Username or password cannot be empty"));
         }
@@ -55,7 +66,6 @@ public class AuthService {
         }
         user.setPassword(passwordEncoder.encode(password));
         userService.save(user);
-        String token = jwtUtil.getAuthenticationToken(user);
-        return ResponseEntity.ok(new AuthenticationResponse(BEARER_PREFIX, token));
+        return ResponseEntity.ok(new MessageResponse("User created successfully"));
     }
 }

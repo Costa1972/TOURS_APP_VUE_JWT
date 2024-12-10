@@ -27,7 +27,6 @@ public class AuthFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthFilter.class);
 
-    private final String BEARER_PREFIX = "Bearer ";
     private final String AUTHORIZATION_HEADER = "Authorization";
     private final UserService userService;
     private final JwtUtil jwtUtil;
@@ -37,8 +36,10 @@ public class AuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
+        String authHeader = request.getHeader(AUTHORIZATION_HEADER);
+        String BEARER_PREFIX = "Bearer ";
+
         try {
-            String authHeader = request.getHeader(AUTHORIZATION_HEADER);
             if (!StringUtils.hasText(authHeader) || !authHeader.startsWith(BEARER_PREFIX)) {
                 filterChain.doFilter(request, response);
                 return;

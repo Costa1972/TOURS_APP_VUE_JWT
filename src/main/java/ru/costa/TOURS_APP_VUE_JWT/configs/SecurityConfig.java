@@ -10,9 +10,12 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.costa.TOURS_APP_VUE_JWT.security.filters.AuthFilter;
 import ru.costa.TOURS_APP_VUE_JWT.services.UserService;
 
 @Configuration
@@ -21,6 +24,7 @@ import ru.costa.TOURS_APP_VUE_JWT.services.UserService;
 public class SecurityConfig {
 
     private final UserService userService;
+    private final AuthFilter authFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,8 +35,13 @@ public class SecurityConfig {
                     authorizeRequest.requestMatchers("/api/auth/signin").permitAll();
                     authorizeRequest.requestMatchers("/api/auth/signup").permitAll();
                     authorizeRequest.requestMatchers("/api/auth/users").hasRole("ADMIN");
+                    authorizeRequest.requestMatchers("/api/auth/addPhone").hasRole("ADMIN");
                     authorizeRequest.anyRequest().authenticated();
                 })
+                .sessionManagement(manager ->
+                        manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
