@@ -4,14 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.costa.TOURS_APP_VUE_JWT.models.Role;
 import ru.costa.TOURS_APP_VUE_JWT.models.User;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.requests.SignInRequest;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.requests.SignUpRequest;
@@ -19,11 +13,6 @@ import ru.costa.TOURS_APP_VUE_JWT.security.payloads.responses.AuthenticationResp
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.responses.MessageResponse;
 import ru.costa.TOURS_APP_VUE_JWT.security.utils.JwtUtil;
 import ru.costa.TOURS_APP_VUE_JWT.services.UserService;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

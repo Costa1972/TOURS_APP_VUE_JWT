@@ -1,19 +1,15 @@
 package ru.costa.TOURS_APP_VUE_JWT.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.costa.TOURS_APP_VUE_JWT.models.Role;
 import ru.costa.TOURS_APP_VUE_JWT.models.User;
 import ru.costa.TOURS_APP_VUE_JWT.repository.UserRepository;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

@@ -5,9 +5,6 @@ import org.springframework.stereotype.Component;
 import ru.costa.TOURS_APP_VUE_JWT.models.*;
 import ru.costa.TOURS_APP_VUE_JWT.repository.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Component
 public class AppInit {
 

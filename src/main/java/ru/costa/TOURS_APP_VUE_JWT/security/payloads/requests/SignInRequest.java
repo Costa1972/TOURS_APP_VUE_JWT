@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.costa.TOURS_APP_VUE_JWT.models.Role;
 
 import java.util.Set;
 
