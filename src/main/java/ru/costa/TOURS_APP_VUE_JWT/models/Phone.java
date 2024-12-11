@@ -19,7 +19,4 @@ public class Phone {
     private Long id;
     private String phoneNumber;
     private String phoneType;
-
-    @ManyToOne
-    private User user;
 }

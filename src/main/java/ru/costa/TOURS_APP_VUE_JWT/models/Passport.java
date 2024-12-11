@@ -21,7 +21,4 @@ public class Passport {
     private String series;
     @Column(name = "number")
     private String number;
-
-//    @ManyToOne
-//    private User user;
 }

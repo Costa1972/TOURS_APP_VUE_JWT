@@ -44,11 +44,11 @@ public class User implements UserDetails {
     @Fetch(FetchMode.JOIN)
     private Set<Role> roles;
 
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Set<Phone> phones;
 
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Set<Payment> payments;
 

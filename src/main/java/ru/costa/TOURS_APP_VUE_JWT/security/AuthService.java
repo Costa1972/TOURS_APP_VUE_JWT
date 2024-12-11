@@ -54,6 +54,9 @@ public class AuthService {
             return ResponseEntity.badRequest().body(new MessageResponse("Passwords do not match"));
         }
         user.setPassword(passwordEncoder.encode(password));
+        user.setPassport(signUpRequest.getPassport());
+        user.setPhones(signUpRequest.getPhones());
+        user.setPayments(signUpRequest.getPayments());
         userService.save(user);
         return ResponseEntity.ok(new MessageResponse("User created successfully"));
     }

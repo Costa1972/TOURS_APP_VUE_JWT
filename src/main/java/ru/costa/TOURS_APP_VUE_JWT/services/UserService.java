@@ -30,14 +30,9 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
-//        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-//        for (Role role : user.getRoles()) {
-//            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-//        }
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-//                grantedAuthorities
                 user.getRoles().stream().map(role ->
                         new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet())
         );
