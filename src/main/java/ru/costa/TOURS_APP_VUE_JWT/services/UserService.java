@@ -22,8 +22,12 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public User createUser(User user) {
+    public User save(User user) {
         return userRepository.save(user);
+    }
+
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 
     @Override
@@ -41,10 +45,6 @@ public class UserService implements UserDetailsService {
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь %s не найден.".formatted(username)));
-    }
-
-    public User save(User user) {
-        return userRepository.save(user);
     }
 
     public boolean ifUserExists(String username) {
