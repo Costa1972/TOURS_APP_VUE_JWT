@@ -1,5 +1,6 @@
 package ru.costa.TOURS_APP_VUE_JWT.controllers;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import ru.costa.TOURS_APP_VUE_JWT.services.UserService;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:8081")
 public class AuthController {
 
     private final UserService userService;
@@ -23,9 +24,9 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @PostMapping(value = "/signIn", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> authenticateUser(@RequestBody SignInRequest signInRequest) {
+    public ResponseEntity<?> authenticateUser(HttpServletResponse response, @RequestBody SignInRequest signInRequest) {
         return ResponseEntity.ok(
-                authService.signInResponse(signInRequest)
+                authService.signInResponse(response, signInRequest)
         );
     }
 

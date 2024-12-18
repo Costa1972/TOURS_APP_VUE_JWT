@@ -54,13 +54,18 @@ public class JwtUtil {
     }
 
     public String getAuthenticationToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder()
-                .claims(extraClaims)
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000*60*60*24))
-                .signWith(getSecretKey())
-                .compact();
+        try {
+            return Jwts.builder()
+                    .claims(extraClaims)
+                    .subject(userDetails.getUsername())
+                    .issuedAt(new Date(System.currentTimeMillis()))
+                    .expiration(new Date(System.currentTimeMillis() + 1000*60*60*24))
+                    .signWith(getSecretKey())
+                    .compact();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
+        return null;
     }
 
     public Claims getClaimsFromToken(String token) {
@@ -84,8 +89,24 @@ public class JwtUtil {
         return getExpirationDateFromToken(token).before(new Date());
     }
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String userName = getUsernameFromToken(token);
-        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        try {
+            Jwts.parser()
+                    .verifyWith(getSecretKey())
+                    .build()
+                    .parse(token);
+            return true;
+        } catch (MalformedJwtException e) {
+            LOGGER.error("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            LOGGER.error("Expired JWT token: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            LOGGER.error("Unsupported JWT token: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("JWT claims string is empty: {}", e.getMessage());
+        }
+        return  false;
+//        final String userName = getUsernameFromToken(token);
+//        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
 //    public boolean isTokenValid(String token) {

@@ -1,5 +1,6 @@
 package ru.costa.TOURS_APP_VUE_JWT.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +12,7 @@ import ru.costa.TOURS_APP_VUE_JWT.security.payloads.requests.SignInRequest;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.requests.SignUpRequest;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.responses.AuthenticationResponse;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.responses.MessageResponse;
+import ru.costa.TOURS_APP_VUE_JWT.security.utils.CookieUtil;
 import ru.costa.TOURS_APP_VUE_JWT.security.utils.JwtUtil;
 import ru.costa.TOURS_APP_VUE_JWT.services.UserService;
 
@@ -21,16 +23,18 @@ public class AuthService {
     private static final String BEARER_PREFIX = "Bearer ";
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final CookieUtil cookieUtil;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
 
-    public AuthenticationResponse signInResponse(SignInRequest signInRequest) {
+    public AuthenticationResponse signInResponse(HttpServletResponse response, SignInRequest signInRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 signInRequest.getUsername(),
                 signInRequest.getPassword()));
         var user = userService.loadUserByUsername(signInRequest.getUsername());
         String token = jwtUtil.generateToken(user);
+        cookieUtil.setAccessToken(response, token, 604800);
         return new AuthenticationResponse(BEARER_PREFIX, token, signInRequest.getUsername());
     }
 
