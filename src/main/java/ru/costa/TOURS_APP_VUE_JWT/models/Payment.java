@@ -19,4 +19,9 @@ public class Payment {
     private Long id;
     private Double amount;
     private BasisOfPayment basisOfPayment;
+
+    public Payment(double amount, BasisOfPayment basisOfPayment) {
+        this.amount = amount;
+        this.basisOfPayment = basisOfPayment;
+    }
 }

@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 import ru.costa.TOURS_APP_VUE_JWT.models.*;
 import ru.costa.TOURS_APP_VUE_JWT.repository.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Component
 public class AppInit {
 
@@ -32,6 +35,8 @@ public class AppInit {
 //        Set<Role> roles = new HashSet<>();
 //        roles.add(admin);
 //        roles.add(user);
+//        roleRepository.save(admin);
+//        roleRepository.save(user);
 //
 //        Passport passport1 = Passport.builder()
 //                .series("3476")
@@ -80,7 +85,7 @@ public class AppInit {
 //                .patronymic("Antonovich")
 //                .passport(passport1)
 //                .payments(Set.of(payment2, payment4))
-//                .phones(Set.of(phoneUser1, mobPhoneUser2))
+//                .phones(Set.of(phoneUser1, mobPhoneUser1))
 //                .roles(Set.of(admin, user))
 //                .build();
 //        User user2 = User.builder()
@@ -96,7 +101,6 @@ public class AppInit {
 //                .build();
 //        userRepository.save(user1);
 //        userRepository.save(user2);
-//        this.paymentRepository = paymentRepository;
     }
 //
     public Role checkRole(String name, RoleRepository roleRepository) {

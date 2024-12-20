@@ -8,9 +8,9 @@ import ru.costa.TOURS_APP_VUE_JWT.services.UserService;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/users")
+//@CrossOrigin("http://localhost:8081")
 @RequiredArgsConstructor
 public class UserController {
 

@@ -3,6 +3,7 @@ package ru.costa.TOURS_APP_VUE_JWT.security.utils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +15,9 @@ import ru.costa.TOURS_APP_VUE_JWT.models.User;
 import ru.costa.TOURS_APP_VUE_JWT.repository.RoleRepository;
 
 import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public class JwtUtil {
     @Value("${jwt.secretPhrase}")
     private String secretPhrase;
     @Value("${jwt.expirationToken}")
-    private String expirationToken;
+    private Long expirationToken;
 
     public SecretKey getSecretKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretPhrase));
@@ -54,12 +55,18 @@ public class JwtUtil {
     }
 
     public String getAuthenticationToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        String id = UUID.randomUUID().toString().replaceAll("-", "");
+        Date now = new Date();
+        Date expiration = Date.from(LocalDateTime.now().plusMinutes(expirationToken)
+                .atZone(ZoneId.systemDefault()).toInstant());
         try {
             return Jwts.builder()
                     .claims(extraClaims)
+                    .id(id)
                     .subject(userDetails.getUsername())
-                    .issuedAt(new Date(System.currentTimeMillis()))
-                    .expiration(new Date(System.currentTimeMillis() + 1000*60*60*24))
+                    .issuedAt(now)
+                    .expiration(expiration)
+//                    .claim("authorities", userDetails.getAuthorities())
                     .signWith(getSecretKey())
                     .compact();
         } catch (Exception e) {
@@ -105,26 +112,11 @@ public class JwtUtil {
             LOGGER.error("JWT claims string is empty: {}", e.getMessage());
         }
         return  false;
-//        final String userName = getUsernameFromToken(token);
-//        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-//    public boolean isTokenValid(String token) {
-//        try {
-//            Jwts.parser()
-//                    .verifyWith(getSecretKey())
-//                    .build()
-//                    .parse(token);
-//            return true;
-//        } catch (MalformedJwtException e) {
-//            LOGGER.error("Invalid JWT token: {}", e.getMessage());
-//        } catch (ExpiredJwtException e) {
-//            LOGGER.error("JWT token is expired: {}", e.getMessage());
-//        } catch (UnsupportedJwtException e) {
-//            LOGGER.error("JWT token is unsupported: {}", e.getMessage());
-//        } catch (IllegalArgumentException e) {
-//            LOGGER.error("JWT claims string is empty: {}", e.getMessage());
-//        }
-//        return false;
-//    }
+    public void clearToken(HttpServletResponse servletResponse) {
+        if (servletResponse.getHeaderNames().contains("Set-Cookie")) {
+            servletResponse.setHeader("Set-Cookie", "");
+        }
+    }
 }

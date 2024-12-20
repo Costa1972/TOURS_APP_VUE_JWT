@@ -15,7 +15,7 @@ import ru.costa.TOURS_APP_VUE_JWT.services.UserService;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:8081")
+//@CrossOrigin("http://localhost:8081")
 public class AuthController {
 
     private final UserService userService;
