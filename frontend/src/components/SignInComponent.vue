@@ -9,9 +9,11 @@
               <div class="form-group">
                 <input v-model="user.username" type="text" placeholder="email"/>
               </div>
+              <br/>
               <div class="form-group">
                 <input v-model="user.password" type="password" placeholder="пароль"/>
               </div>
+              <br/>
               <button class="btn btn-primary" type="submit">Отправить</button>
             </form>
             <div class="mt-3">

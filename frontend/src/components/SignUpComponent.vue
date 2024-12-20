@@ -27,6 +27,7 @@
               <div class="form-group">
                 <input v-model="user.phone" class="form-control" type="text" placeholder="телефон"/>
               </div>
+              <br/>
               <button class="btn btn-primary" type="submit">Отправить</button>
             </form>
             <div class="mt-3">
