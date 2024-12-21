@@ -28,6 +28,7 @@
 
 <script>
 import AuthService from "@/services/AuthService";
+import Cookies from "js-cookie";
 
 export default {
   data() {
@@ -41,7 +42,7 @@ export default {
   methods: {
     signInUser() {
       AuthService.signIn(this.user).then(response => {
-        console.log(response);
+        Cookies.set("token", response.data.token, 7);
       });
     }
   }
