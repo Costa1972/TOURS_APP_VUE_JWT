@@ -6,6 +6,8 @@
 
 <script>
 import UserService from "@/services/UserService";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 export default {
   name: "GetAllUsersComponent",
@@ -34,11 +36,16 @@ export default {
   },
   methods: {
     getAllUsers() {
+      const authToken = Cookies.get('token');
+      axios.interceptors.request.use((config) => {
+        config.headers.authorization = `Bearer ${authToken}`;
+        return config;
+      });
       this.loading = true;
       const { page, usersPerPage } = this.options;
       let pageNumber = page - 1;
       UserService.getAllUsers().then((response) => {
-        this.users = response;
+        return response;
       });
     },
   },

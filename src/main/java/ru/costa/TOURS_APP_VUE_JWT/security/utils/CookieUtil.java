@@ -21,13 +21,16 @@ public class CookieUtil {
     private final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
 
     public void setAccessToken(HttpServletResponse response, String accessToken, int age) {
-        Cookie cookie = new Cookie(ACCESS_TOKEN_COOKIE_NAME, accessToken);
-        cookie.setPath("/");
-        cookie.setMaxAge(age);
-        cookie.setHttpOnly(true);
-//        cookie.setSecure(true);
-        response.addCookie(cookie);
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        ResponseCookie responseCookie = ResponseCookie
+                .from(ACCESS_TOKEN_COOKIE_NAME, accessToken)
+                .path("/api/auth/*")
+                .maxAge(age)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("Strict")
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
     }
 
     public void setRefreshToken(HttpServletResponse response, String refreshToken, int age) {
@@ -53,7 +56,7 @@ public class CookieUtil {
         Cookie[] cookies = request.getCookies();
         return Arrays.stream(cookies)
                 .filter(cookie ->
-                    cookie.getName().equals(ACCESS_TOKEN_COOKIE_NAME))
+                        cookie.getName().equals(ACCESS_TOKEN_COOKIE_NAME))
                 .map(Cookie::getValue)
                 .findFirst()
                 .orElse(null);
