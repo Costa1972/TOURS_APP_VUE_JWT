@@ -8,7 +8,11 @@
         {{ user.firstName }}
         {{ user.patronymic }}
         {{ user.username }},
-        {{ user.phones}}
+        <li v-for="phone in user.phones" :key="phone.id">
+          {{ phone.phoneNumber}}
+          {{ phone.phoneType }}
+        </li>
+
       </li>
     </ul>
   </div>
