@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import UserService from "@/services/UserService";
 import Cookies from "js-cookie";
 import axios from "axios";
 

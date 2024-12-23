@@ -15,7 +15,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final PhoneService phoneService;
 
     @GetMapping
     private ResponseEntity<List<User>> getAllUsers() {
