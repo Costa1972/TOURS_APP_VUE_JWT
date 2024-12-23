@@ -1,6 +1,16 @@
 <template>
   <div class="">
 <h1>Hello</h1>
+    <ul>
+      <li v-for="user in users" :key="user.id">
+        {{ user.id }}
+        {{ user.lastName }}
+        {{ user.firstName }}
+        {{ user.patronymic }}
+        {{ user.username }},
+        {{ user.phones}}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -16,6 +26,7 @@ export default {
       page: 0,
       numberOfPages: 0,
       users: [],
+      phones: [],
       loading: true,
       options: {},
       headers: [
@@ -37,15 +48,11 @@ export default {
   methods: {
     getAllUsers() {
       const authToken = Cookies.get('token');
-      axios.interceptors.request.use((config) => {
-        config.headers.authorization = `Bearer ${authToken}`;
-        return config;
-      });
-      this.loading = true;
-      const { page, usersPerPage } = this.options;
-      let pageNumber = page - 1;
-      UserService.getAllUsers().then((response) => {
-        return response;
+      if (authToken) {
+        axios.defaults.headers.common.Authorization = 'Bearer ' + authToken;
+      }
+      axios.get('http://localhost:8080/api/users').then(response => {
+        this.users = response.data;
       });
     },
   },

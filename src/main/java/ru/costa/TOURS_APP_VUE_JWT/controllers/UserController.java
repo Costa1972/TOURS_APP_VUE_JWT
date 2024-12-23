@@ -4,17 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.costa.TOURS_APP_VUE_JWT.models.User;
+import ru.costa.TOURS_APP_VUE_JWT.services.PhoneService;
 import ru.costa.TOURS_APP_VUE_JWT.services.UserService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-//@CrossOrigin("http://localhost:8081")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final PhoneService phoneService;
 
     @GetMapping
     private ResponseEntity<List<User>> getAllUsers() {
