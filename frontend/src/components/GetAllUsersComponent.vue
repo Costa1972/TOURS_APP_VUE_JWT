@@ -1,21 +1,28 @@
 <template>
-  <div class="">
-<h1>Hello</h1>
-    <ul>
-      <li v-for="user in users" :key="user.id">
-        {{ user.id }}
-        {{ user.lastName }}
-        {{ user.firstName }}
-        {{ user.patronymic }}
-        {{ user.username }},
-        <li v-for="phone in user.phones" :key="phone.id">
-          {{ phone.phoneNumber}}
-          {{ phone.phoneType }}
-        </li>
+    <h1>Список участников</h1>
+  <br/>
+    <div class="content">
+      <div v-for="user in users" :key="user.id">
+        {{
+          `${user.id + '.'} ${user.lastName} ${user.firstName} ${user.patronymic} ${user.username}
+          -${user.phones.map(phone => `${phone.phoneNumber} (${phone.phoneType})
+          -${user.payments.map(payment => `${payment.amount} (${payment.basisOfPayment})`)}`).join(', ')}`
+        }}
+      </div>
+    </div>
 
-      </li>
-    </ul>
-  </div>
+<!--    <li v-for="user in users" :key="user.id">-->
+<!--      {{ user.id }}-->
+<!--      {{ user.lastName }}-->
+<!--      {{ user.firstName }}-->
+<!--      {{ user.patronymic }}-->
+<!--      {{ user.username }},-->
+<!--      <li v-for="phone in user.phones" :key="phone.id">-->
+<!--        {{ phone.phoneNumber }}-->
+<!--        {{ phone.phoneType }}-->
+<!--      </li>-->
+
+<!--    </li>-->
 </template>
 
 <script>
@@ -30,6 +37,7 @@ export default {
       numberOfPages: 0,
       users: [],
       phones: [],
+      payments: [],
       loading: true,
       options: {},
       headers: [
@@ -44,7 +52,7 @@ export default {
   watch: {
     options: {
       handler() {
-      this.getAllUsers()
+        this.getAllUsers()
       },
     },
   },
