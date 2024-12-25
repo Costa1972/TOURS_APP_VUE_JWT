@@ -1,5 +1,6 @@
 package ru.costa.TOURS_APP_VUE_JWT.models;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,8 +21,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @Builder
 public class User extends BaseEntity implements UserDetails {
-    private static final long serialVersionUID = 1L;
 
+    @Serial
+    private static final long serialVersionUID = 1L;
     @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false)

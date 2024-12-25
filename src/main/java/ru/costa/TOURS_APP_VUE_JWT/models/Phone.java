@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "phones")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
