@@ -13,6 +13,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.costa.TOURS_APP_VUE_JWT.dtos.NewUser;
+import ru.costa.TOURS_APP_VUE_JWT.mapper.UserMapper;
 import ru.costa.TOURS_APP_VUE_JWT.models.User;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.requests.SignInRequest;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.requests.SignUpRequest;
@@ -37,6 +39,7 @@ public class AuthService {
     private final CookieUtil cookieUtil;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final UserMapper userMapper;
 
 
     public AuthenticationResponse signInResponse(HttpServletResponse response, SignInRequest signInRequest) {
@@ -61,13 +64,17 @@ public class AuthService {
     public ResponseEntity<?> signUpResponse(SignUpRequest signUpRequest) {
         String username = signUpRequest.getUsername();
         String password = signUpRequest.getPassword();
-        User user = new User(signUpRequest.getUsername(),
+        NewUser newUser = new NewUser(
+                signUpRequest.getUsername(),
                 signUpRequest.getPassword(),
                 signUpRequest.getConfirmPassword(),
                 signUpRequest.getLastName(),
                 signUpRequest.getFirstName(),
                 signUpRequest.getPatronymic(),
-                signUpRequest.getRoles());
+                signUpRequest.getPhones(),
+                signUpRequest.getRoles(),
+                signUpRequest.getPayments(),
+                signUpRequest.getPassport());
         if (username == null || password == null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Username or password cannot be empty"));
         }
@@ -77,11 +84,11 @@ public class AuthService {
         if (!password.equals(signUpRequest.getConfirmPassword())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Passwords do not match"));
         }
-        user.setPassword(passwordEncoder.encode(password));
-        user.setPassport(signUpRequest.getPassport());
-        user.setPhones(signUpRequest.getPhones());
-        user.setPayments(signUpRequest.getPayments());
-        userService.save(user);
+        newUser.setPassword(passwordEncoder.encode(password));
+        newUser.setPassport(signUpRequest.getPassport());
+        newUser.setPhones(signUpRequest.getPhones());
+        newUser.setPayments(signUpRequest.getPayments());
+        userService.save(userMapper.toUser(newUser));
         return ResponseEntity.ok(new MessageResponse("User created successfully"));
     }
 }
