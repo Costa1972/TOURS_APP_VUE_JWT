@@ -9,21 +9,27 @@
               <div class="form-group">
                 <input v-model="user.lastName" class="form-control" type="text" placeholder="Фамилия"/>
               </div>
+              <br/>
               <div class="form-group">
                 <input v-model="user.firstName" class="form-control" type="text" placeholder="Имя"/>
               </div>
+              <br/>
               <div class="form-group">
                 <input v-model="user.patronymic" class="form-control" type="text" placeholder="Отчество"/>
               </div>
+              <br/>
               <div class="form-group">
                 <input v-model="user.username" class="form-control" type="text" placeholder="email"/>
               </div>
+              <br/>
               <div class="form-group">
                 <input v-model="user.password" class="form-control" type="password" placeholder="пароль"/>
               </div>
+              <br/>
               <div class="form-group">
                 <input v-model="user.confirmPassword" class="form-control" type="password" placeholder="пароль еще раз"/>
               </div>
+              <br/>
               <div class="form-group">
                 <input v-model="user.phone" class="form-control" type="text" placeholder="телефон"/>
               </div>
@@ -42,6 +48,7 @@
 
 <script>
 import AuthService from "@/services/AuthService";
+import roles from "vue-cookie";
 
 export default {
   data() {
@@ -54,6 +61,7 @@ export default {
         password: '',
         confirmPassword: '',
         phone: '',
+        roles: []
       }
     };
   },
