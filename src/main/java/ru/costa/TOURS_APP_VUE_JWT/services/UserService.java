@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.costa.TOURS_APP_VUE_JWT.dtos.UserDto;
+import ru.costa.TOURS_APP_VUE_JWT.mapper.UserMapper;
 import ru.costa.TOURS_APP_VUE_JWT.models.User;
 import ru.costa.TOURS_APP_VUE_JWT.repository.UserRepository;
 
@@ -17,9 +19,12 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserDto> userDtoList = userMapper.toUserDtos(users);
+        return userDtoList;
     }
 
     public User save(User user) {
