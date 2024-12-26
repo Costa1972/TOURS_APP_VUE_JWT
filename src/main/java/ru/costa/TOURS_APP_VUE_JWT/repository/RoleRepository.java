@@ -13,4 +13,6 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     @Query("FROM Role r WHERE r.name = :name")
     Optional<Role> findByName(@Param("name") String name);
+
+    boolean existsByName(String name);
 }

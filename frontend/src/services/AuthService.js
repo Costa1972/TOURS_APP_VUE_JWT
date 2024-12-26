@@ -12,6 +12,7 @@ class AuthService {
     }
 
     signUp(user) {
+        user.roles.push('ROLE_USER')
         return axios.post(`${BASE_URL}/signUp`, user);
     }
     signIn(user) {

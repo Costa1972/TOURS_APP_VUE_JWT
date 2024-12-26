@@ -15,14 +15,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.costa.TOURS_APP_VUE_JWT.dtos.NewUser;
 import ru.costa.TOURS_APP_VUE_JWT.mapper.UserMapper;
+import ru.costa.TOURS_APP_VUE_JWT.models.Role;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.requests.SignInRequest;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.requests.SignUpRequest;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.responses.AuthenticationResponse;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.responses.MessageResponse;
 import ru.costa.TOURS_APP_VUE_JWT.security.utils.CookieUtil;
 import ru.costa.TOURS_APP_VUE_JWT.security.utils.JwtUtil;
+import ru.costa.TOURS_APP_VUE_JWT.services.RoleService;
 import ru.costa.TOURS_APP_VUE_JWT.services.UserService;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,6 +42,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final UserMapper userMapper;
+    private final RoleService roleService;
 
 
     public AuthenticationResponse signInResponse(HttpServletResponse response, SignInRequest signInRequest) {
@@ -63,6 +67,8 @@ public class AuthService {
     public ResponseEntity<?> signUpResponse(SignUpRequest signUpRequest) {
         String username = signUpRequest.getUsername();
         String password = signUpRequest.getPassword();
+        Set<Role> roles = signUpRequest.getRoles();
+        Set<Role> userRoles = new HashSet<>();
         NewUser newUser = new NewUser(
                 signUpRequest.getUsername(),
                 signUpRequest.getPassword(),
@@ -71,7 +77,7 @@ public class AuthService {
                 signUpRequest.getFirstName(),
                 signUpRequest.getPatronymic(),
                 signUpRequest.getPhones(),
-                signUpRequest.getRoles(),
+                roles,
                 signUpRequest.getPayments(),
                 signUpRequest.getPassport());
         if (username == null || password == null) {
@@ -83,6 +89,21 @@ public class AuthService {
         if (!password.equals(signUpRequest.getConfirmPassword())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Passwords do not match"));
         }
+
+        roles.forEach(role -> {
+            if (!roleService.isRoleExist(role.getName())) {
+                roleService.save(role);
+                userRoles.add(role);
+            } else {
+                userRoles.add(roleService.getRole(role.getName()).get());
+            }
+            newUser.setRoles(userRoles);
+        });
+
+//        roles.forEach(role -> {
+//                newUser.setRoles(Set.of(roleService.getRole(role.getName())
+//                        .orElse(role)));
+//        });
         newUser.setPassword(passwordEncoder.encode(password));
         newUser.setPassport(signUpRequest.getPassport());
         newUser.setPhones(signUpRequest.getPhones());

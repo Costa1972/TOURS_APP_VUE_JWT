@@ -48,7 +48,6 @@
 
 <script>
 import AuthService from "@/services/AuthService";
-import roles from "vue-cookie";
 
 export default {
   data() {

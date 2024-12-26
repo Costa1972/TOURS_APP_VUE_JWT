@@ -23,8 +23,7 @@ public class UserService implements UserDetailsService {
 
     public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
-        List<UserDto> userDtoList = userMapper.toUserDtos(users);
-        return userDtoList;
+        return userMapper.toUserDtos(users);
     }
 
     public User save(User user) {

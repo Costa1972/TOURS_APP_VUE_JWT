@@ -18,4 +18,11 @@ public class RoleService {
         return roleRepository.findByName(name);
     }
 
+    public boolean isRoleExist(String name) {
+        return roleRepository.existsByName(name);
+    }
+
+    public void save(Role role) {
+        roleRepository.save(role);
+    }
 }
