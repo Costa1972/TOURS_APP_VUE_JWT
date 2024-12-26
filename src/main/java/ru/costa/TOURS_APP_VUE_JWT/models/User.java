@@ -81,19 +81,4 @@ public class User extends BaseEntity implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
-    public User(String username,
-                String password,
-                String confirmPassword,
-                String lastName,
-                String firstName,
-                String patronymic,
-                Set<Role> roles) {
-        this.username = username;
-        this.password = password;
-        this.confirmPassword = confirmPassword;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.patronymic = patronymic;
-        this.roles = roles;
-    }
 }

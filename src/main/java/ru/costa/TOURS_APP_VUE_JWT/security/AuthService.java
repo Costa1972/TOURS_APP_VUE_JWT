@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.costa.TOURS_APP_VUE_JWT.dtos.NewUser;
 import ru.costa.TOURS_APP_VUE_JWT.mapper.UserMapper;
-import ru.costa.TOURS_APP_VUE_JWT.models.User;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.requests.SignInRequest;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.requests.SignUpRequest;
 import ru.costa.TOURS_APP_VUE_JWT.security.payloads.responses.AuthenticationResponse;
