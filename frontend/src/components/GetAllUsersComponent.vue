@@ -5,6 +5,7 @@
       <div v-for="user in users" :key="user.id">
         {{
           `${user.id + '.'} ${user.lastName} ${user.firstName} ${user.patronymic} ${user.username}
+          - паспорт: ${user.passport.series} ${user.passport.number},
           -${user.phones.map(phone => `${phone.phoneNumber} (${phone.phoneType})
           -${user.payments.map(payment => `${payment.amount} (${payment.basisOfPayment})`)}`).join(', ')}`
         }}

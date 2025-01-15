@@ -1,6 +1,5 @@
 package ru.costa.TOURS_APP_VUE_JWT.security.exceptions;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -19,7 +18,7 @@ public class EntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
-                         AuthenticationException authException) throws IOException, ServletException {
+                         AuthenticationException authException) throws IOException {
         LOGGER.error("Unauthorized error: %s".formatted(authException.getMessage()));
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
     }
